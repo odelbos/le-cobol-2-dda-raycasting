@@ -18,7 +18,7 @@ void rlSetTargetFPS(int fps) {
 }
 
 int rlWindowShouldClose() {
-  return WindowShouldClose();
+  return (int)WindowShouldClose();
 }
 
 void rlCloseWindow() {
