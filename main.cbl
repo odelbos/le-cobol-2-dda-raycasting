@@ -46,69 +46,7 @@
            PERFORM UNTIL WS-SHOULD-CLOSE = 1
                CALL "rlBeginDrawing"
                CALL "rlClearBackground" USING BY VALUE 0
-
-               CALL "rlDrawRectangle" USING
-                   BY VALUE WS-MAP-X WS-MAP-Y WS-MAP-WIDTH
-                   WS-MAP-HEIGHT, 1
-
-               COMPUTE WS-MAP-CELL-W = WS-MAP-WIDTH / WS-WORLD-WIDTH
-               COMPUTE WS-MAP-CELL-H = WS-MAP-HEIGHT / WS-WORLD-HEIGHT
-
-               PERFORM VARYING WS-Y FROM 1 BY 1
-                       UNTIL WS-Y > WS-WORLD-HEIGHT
-
-                   PERFORM VARYING WS-X FROM 1 BY 1
-                         UNTIL WS-X > WS-WORLD-WIDTH
-
-                       MOVE WS-WORLD(WS-Y, WS-X) TO WS-MAP-WALL
-
-                       IF WS-MAP-WALL > 0 THEN
-                          COMPUTE WS-P1-X =
-                             (WS-X - 1) * WS-MAP-CELL-W + WS-MAP-X
-
-                          COMPUTE WS-P1-Y =
-                             (WS-Y - 1) * WS-MAP-CELL-H + WS-MAP-Y
-
-                          COMPUTE WS-RECT-W =
-                             FUNCTION INTEGER(WS-MAP-CELL-W)
-                          COMPUTE WS-RECT-H =
-                             FUNCTION INTEGER(WS-MAP-CELL-H)
-
-                          CALL "rlDrawRectangle" USING
-                             BY VALUE WS-P1-X WS-P1-Y WS-RECT-W
-                             WS-RECT-H, WS-MAP-WALL
-                       END-IF
-                   END-PERFORM
-               END-PERFORM
-
-               PERFORM VARYING WS-X FROM 1 BY 1
-                       UNTIL WS-X > (WS-WORLD-WIDTH + 1)
-
-                       COMPUTE WS-P1-X =
-                           (WS-X - 1) * WS-MAP-CELL-W + WS-MAP-X
-
-                       COMPUTE WS-P2-Y = WS-MAP-Y + WS-MAP-HEIGHT
-
-                       CALL "rlDrawLine" USING
-                           BY VALUE WS-P1-X WS-MAP-Y
-                           WS-P1-X WS-P2-Y
-                           2
-               END-PERFORM
-
-               PERFORM VARYING WS-Y FROM 1 BY 1
-                       UNTIL WS-Y > (WS-WORLD-WIDTH + 1)
-
-                       COMPUTE WS-P1-Y =
-                           (WS-Y - 1) * WS-MAP-CELL-H + WS-MAP-Y
-
-                       COMPUTE WS-P2-X = WS-MAP-X + WS-MAP-WIDTH
-
-                       CALL "rlDrawLine" USING
-                           BY VALUE WS-MAP-X WS-P1-Y
-                           WS-P2-X WS-P1-Y
-                           2
-               END-PERFORM
-
+               PERFORM RENDER-WORLD-MAP
                CALL "rlEndDrawing"
                CALL "rlWindowShouldClose" RETURNING WS-SHOULD-CLOSE
            END-PERFORM.
@@ -116,5 +54,69 @@
            CALL "rlCloseWindow".
 
            STOP RUN.
+
+       RENDER-WORLD-MAP.
+
+         CALL "rlDrawRectangle" USING
+               BY VALUE WS-MAP-X WS-MAP-Y WS-MAP-WIDTH
+               WS-MAP-HEIGHT, 1
+
+         COMPUTE WS-MAP-CELL-W = WS-MAP-WIDTH / WS-WORLD-WIDTH
+         COMPUTE WS-MAP-CELL-H = WS-MAP-HEIGHT / WS-WORLD-HEIGHT
+
+         PERFORM VARYING WS-Y FROM 1 BY 1
+                   UNTIL WS-Y > WS-WORLD-HEIGHT
+
+               PERFORM VARYING WS-X FROM 1 BY 1
+                     UNTIL WS-X > WS-WORLD-WIDTH
+
+                   MOVE WS-WORLD(WS-Y, WS-X) TO WS-MAP-WALL
+
+                   IF WS-MAP-WALL > 0 THEN
+                      COMPUTE WS-P1-X =
+                         (WS-X - 1) * WS-MAP-CELL-W + WS-MAP-X
+
+                      COMPUTE WS-P1-Y =
+                         (WS-Y - 1) * WS-MAP-CELL-H + WS-MAP-Y
+
+                      COMPUTE WS-RECT-W =
+                         FUNCTION INTEGER(WS-MAP-CELL-W)
+                      COMPUTE WS-RECT-H =
+                         FUNCTION INTEGER(WS-MAP-CELL-H)
+
+                      CALL "rlDrawRectangle" USING
+                         BY VALUE WS-P1-X WS-P1-Y WS-RECT-W
+                         WS-RECT-H, WS-MAP-WALL
+                   END-IF
+               END-PERFORM
+         END-PERFORM.
+
+         PERFORM VARYING WS-X FROM 1 BY 1
+                   UNTIL WS-X > (WS-WORLD-WIDTH + 1)
+
+                   COMPUTE WS-P1-X =
+                       (WS-X - 1) * WS-MAP-CELL-W + WS-MAP-X
+
+                   COMPUTE WS-P2-Y = WS-MAP-Y + WS-MAP-HEIGHT
+
+                   CALL "rlDrawLine" USING
+                       BY VALUE WS-P1-X WS-MAP-Y
+                       WS-P1-X WS-P2-Y
+                       2
+         END-PERFORM.
+
+         PERFORM VARYING WS-Y FROM 1 BY 1
+                   UNTIL WS-Y > (WS-WORLD-WIDTH + 1)
+
+                   COMPUTE WS-P1-Y =
+                       (WS-Y - 1) * WS-MAP-CELL-H + WS-MAP-Y
+
+                   COMPUTE WS-P2-X = WS-MAP-X + WS-MAP-WIDTH
+
+                   CALL "rlDrawLine" USING
+                       BY VALUE WS-MAP-X WS-P1-Y
+                       WS-P2-X WS-P1-Y
+                       2
+         END-PERFORM.
 
        END PROGRAM RAYCAST.
