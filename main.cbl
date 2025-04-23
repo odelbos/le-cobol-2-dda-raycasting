@@ -5,12 +5,29 @@
        DATA DIVISION.
        WORKING-STORAGE SECTION.
 
-       01 WS-HELLO PIC X(5) VALUE "hello".
-       01 WS-WORLD PIC X(13) VALUE "world from C!".
+       01 WS-WINDOW-WIDTH  PIC 9(4) VALUE 640.
+       01 WS-WINDOW-HEIGHT PIC 9(4) VALUE 480.
+       01 WS-WINDOW-TITLE  PIC X(20) VALUE "Cobol Raycast".
+       01 WS-SHOULD-CLOSE  PIC 9 VALUE 0.
 
        PROCEDURE DIVISION.
 
-           CALL "say" USING WS-HELLO WS-WORLD.
+           CALL "rlInitWindow" USING
+               BY VALUE WS-WINDOW-WIDTH
+               BY VALUE WS-WINDOW-HEIGHT
+               BY REFERENCE WS-WINDOW-TITLE.
+
+           PERFORM UNTIL WS-SHOULD-CLOSE = 1
+               CALL "rlBeginDrawing"
+               CALL "rlClearBackground"
+
+               CALL "rlDrawRectangle" USING BY VALUE 50 50 100 100
+
+               CALL "rlEndDrawing"
+               CALL "rlWindowShouldClose" RETURNING WS-SHOULD-CLOSE
+           END-PERFORM.
+
+           CALL "rlCloseWindow".
 
            STOP RUN.
 
