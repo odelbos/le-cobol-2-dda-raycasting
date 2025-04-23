@@ -10,6 +10,9 @@
        01 WS-WINDOW-TITLE  PIC X(20) VALUE "Cobol Raycast".
        01 WS-SHOULD-CLOSE  PIC 9 VALUE 0.
 
+       COPY DD-WORLD-SIZE.
+       COPY DD-WORLD-DATA.
+
        PROCEDURE DIVISION.
 
            CALL "rlInitWindow" USING
