@@ -5,22 +5,14 @@
        DATA DIVISION.
        WORKING-STORAGE SECTION.
 
-       01 WS-WINDOW-WIDTH  PIC 9(4) VALUE 960.
-       01 WS-WINDOW-HEIGHT PIC 9(4) VALUE 540.
-       01 WS-WINDOW-TITLE   PIC X(21) VALUE "COBOL Flat Raycasting".
-       01 WS-SHOULD-CLOSE  PIC 9 VALUE 0.
+       01 WS-WINDOW-WIDTH     PIC 9(4) VALUE 960.
+       01 WS-WINDOW-HEIGHT    PIC 9(4) VALUE 540.
+       01 WS-WINDOW-TITLE     PIC X(21) VALUE "COBOL Flat Raycasting".
+       01 WS-SHOULD-CLOSE     PIC 9 VALUE 0.
 
        COPY DD-WORLD-SIZE.
        COPY DD-WORLD-DATA.
-
-       01 WS-PLAYER-X     COMP-1 VALUE ZERO.
-       01 WS-PLAYER-Y     COMP-1 VALUE ZERO.
-
-       01 WS-MAP-WIDTH    PIC 9(3) VALUE 300.
-       01 WS-MAP-HEIGHT   PIC 9(3) VALUE 300.
-
-       01 WS-MAP-X        PIC 9(2) VALUE 20.
-       01 WS-MAP-Y        PIC 9(2) VALUE 20.
+       COPY DD-GAME-STATE.
 
        01 WS-MAP-CELL-W   COMP-1 VALUE ZERO.
        01 WS-MAP-CELL-H   COMP-1 VALUE ZERO.
@@ -46,8 +38,15 @@
 
        PROCEDURE DIVISION.
 
-           MOVE 5.5 TO WS-PLAYER-X.
-           MOVE 6.5 TO WS-PLAYER-Y.
+      * Initialize game state
+           MOVE 20 TO MAP-X.
+           MOVE 20 TO MAP-Y.
+
+           MOVE 300 TO MAP-WIDTH.
+           MOVE 300 TO MAP-HEIGHT.
+
+           MOVE 5.5 TO PLAYER-X.
+           MOVE 6.5 TO PLAYER-Y.
 
            CALL "rlInitWindow" USING
                BY VALUE WS-WINDOW-WIDTH
@@ -70,11 +69,11 @@
        RENDER-MAP.
 
          CALL "rlDrawRectangle" USING
-               BY VALUE WS-MAP-X WS-MAP-Y WS-MAP-WIDTH
-               WS-MAP-HEIGHT, 1
+               BY VALUE MAP-X MAP-Y MAP-WIDTH
+               MAP-HEIGHT, 1
 
-         COMPUTE WS-MAP-CELL-W = WS-MAP-WIDTH / WS-WORLD-WIDTH
-         COMPUTE WS-MAP-CELL-H = WS-MAP-HEIGHT / WS-WORLD-HEIGHT
+         COMPUTE WS-MAP-CELL-W = MAP-WIDTH / WS-WORLD-WIDTH
+         COMPUTE WS-MAP-CELL-H = MAP-HEIGHT / WS-WORLD-HEIGHT
 
          PERFORM VARYING WS-Y FROM 1 BY 1
                    UNTIL WS-Y > WS-WORLD-HEIGHT
@@ -86,10 +85,10 @@
 
                    IF WS-MAP-WALL > 0 THEN
                       COMPUTE WS-P1-X =
-                         (WS-X - 1) * WS-MAP-CELL-W + WS-MAP-X
+                         (WS-X - 1) * WS-MAP-CELL-W + MAP-X
 
                       COMPUTE WS-P1-Y =
-                         (WS-Y - 1) * WS-MAP-CELL-H + WS-MAP-Y
+                         (WS-Y - 1) * WS-MAP-CELL-H + MAP-Y
 
                       COMPUTE WS-RECT-W =
                          FUNCTION INTEGER(WS-MAP-CELL-W)
@@ -107,12 +106,12 @@
                    UNTIL WS-X > (WS-WORLD-WIDTH + 1)
 
                    COMPUTE WS-P1-X =
-                       (WS-X - 1) * WS-MAP-CELL-W + WS-MAP-X
+                       (WS-X - 1) * WS-MAP-CELL-W + MAP-X
 
-                   COMPUTE WS-P2-Y = WS-MAP-Y + WS-MAP-HEIGHT
+                   COMPUTE WS-P2-Y = MAP-Y + MAP-HEIGHT
 
                    CALL "rlDrawLine" USING
-                       BY VALUE WS-P1-X WS-MAP-Y
+                       BY VALUE WS-P1-X MAP-Y
                        WS-P1-X WS-P2-Y
                        2
          END-PERFORM.
@@ -121,12 +120,12 @@
                    UNTIL WS-Y > (WS-WORLD-WIDTH + 1)
 
                    COMPUTE WS-P1-Y =
-                       (WS-Y - 1) * WS-MAP-CELL-H + WS-MAP-Y
+                       (WS-Y - 1) * WS-MAP-CELL-H + MAP-Y
 
-                   COMPUTE WS-P2-X = WS-MAP-X + WS-MAP-WIDTH
+                   COMPUTE WS-P2-X = MAP-X + MAP-WIDTH
 
                    CALL "rlDrawLine" USING
-                       BY VALUE WS-MAP-X WS-P1-Y
+                       BY VALUE MAP-X WS-P1-Y
                        WS-P2-X WS-P1-Y
                        2
          END-PERFORM.
@@ -136,10 +135,10 @@
            MOVE 5.0 TO WS-RADIUS.
 
            COMPUTE WS-TMP-X =
-             (WS-MAP-WIDTH / WS-WORLD-WIDTH) * WS-PLAYER-X + WS-MAP-X
+             (MAP-WIDTH / WS-WORLD-WIDTH) * PLAYER-X + MAP-X
 
            COMPUTE WS-TMP-Y =
-             (WS-MAP-HEIGHT / WS-WORLD-HEIGHT) * WS-PLAYER-Y + WS-MAP-Y
+             (MAP-HEIGHT / WS-WORLD-HEIGHT) * PLAYER-Y + MAP-Y
 
            MOVE FUNCTION INTEGER (WS-TMP-X) TO WS-P1-X.
            MOVE FUNCTION INTEGER (WS-TMP-Y) TO WS-P1-Y.
