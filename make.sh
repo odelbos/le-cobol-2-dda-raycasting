@@ -37,7 +37,7 @@ echo "Compiling ..."
 
 set -xe
 
-$CC $CFLAGS $RAYLIB_FLAGS -c wrapper.c -o ./build/wrapper.o
+$CC $CFLAGS $RAYLIB_FLAGS -c ./src/wrapper.c -o ./build/wrapper.o
 
-cobc -x -o raycast main.cbl ./build/wrapper.o -I copybooks \
+cobc -x -o raycast main.cbl ./src/*.cbl ./build/wrapper.o -I copybooks \
   $RAYLIB_LIBS -lm -lpthread
