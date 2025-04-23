@@ -19,10 +19,8 @@
 
            PERFORM UNTIL WS-SHOULD-CLOSE = 1
                CALL "rlBeginDrawing"
-               CALL "rlClearBackground"
-
-               CALL "rlDrawRectangle" USING BY VALUE 50 50 100 100
-
+               CALL "rlClearBackground" USING BY VALUE 0
+               CALL "rlDrawRectangle" USING BY VALUE 50 50 100 100 1
                CALL "rlEndDrawing"
                CALL "rlWindowShouldClose" RETURNING WS-SHOULD-CLOSE
            END-PERFORM.

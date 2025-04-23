@@ -1,5 +1,14 @@
 #include <raylib.h>
 
+#define BACKGROUND CLITERAL(Color){20, 20, 20, 255}
+
+// Trick to choose color using an integer index instead
+// of having to pass Color struct from COBOL to C.
+Color colors[] = {
+  BACKGROUND,
+  RED,
+};
+
 void rlInitWindow(int width, int height, const char* title) {
   InitWindow(width, height, title);
 }
@@ -24,10 +33,10 @@ void rlEndDrawing() {
   EndDrawing();
 }
 
-void rlClearBackground() {
-  ClearBackground(RAYWHITE);
+void rlClearBackground(int colorIdx) {
+  ClearBackground(colors[colorIdx]);
 }
 
-void rlDrawRectangle(int x, int y, int width, int height) {
-  DrawRectangle(x, y, width, height, RED);
+void rlDrawRectangle(int x, int y, int width, int height, int colorIdx) {
+  DrawRectangle(x, y, width, height, colors[colorIdx]);
 }
