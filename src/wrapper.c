@@ -38,6 +38,10 @@ void rlEndDrawing() {
   EndDrawing();
 }
 
+int rlIsKeyDown(int key) {
+  return (int)IsKeyDown(key);
+}
+
 void rlClearBackground(int colorIdx) {
   ClearBackground(colors[colorIdx]);
 }

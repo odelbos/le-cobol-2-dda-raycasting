@@ -5,6 +5,12 @@
        DATA DIVISION.
        WORKING-STORAGE SECTION.
 
+      * Constants from Raylib
+       01 C-KEY-LEFT          PIC 9(3) VALUE 263.
+       01 C-KEY-RIGHT         PIC 9(3) VALUE 262.
+       01 C-KEY-UP            PIC 9(3) VALUE 265.
+       01 C-KEY-DOWN          PIC 9(3) VALUE 264.
+
        01 WS-WINDOW-WIDTH     PIC 9(4) VALUE 960.
        01 WS-WINDOW-HEIGHT    PIC 9(4) VALUE 540.
        01 WS-WINDOW-TITLE     PIC X(21) VALUE "COBOL Flat Raycasting".
@@ -13,6 +19,10 @@
        COPY DD-WORLD-SIZE.
        COPY DD-WORLD-DATA.
        COPY DD-GAME-STATE.
+
+       01 IS-KEY-ACTIVE       PIC 9 VALUE ZERO.
+
+       01 MOVE-SPEED          COMP-1 VALUE ZERO.
 
        PROCEDURE DIVISION.
 
@@ -35,6 +45,8 @@
            MOVE 0 TO CAM-PLANE-X.
            MOVE -0.66 TO CAM-PLANE-Y
 
+           MOVE 0.05 TO MOVE-SPEED.
+
       * Create window
            CALL "rlInitWindow" USING
                BY VALUE WS-WINDOW-WIDTH
@@ -42,7 +54,24 @@
                BY REFERENCE WS-WINDOW-TITLE.
 
       * Main event loop
+           CALL "rlSetTargetFPS" USING BY VALUE 60.
+
            PERFORM UNTIL WS-SHOULD-CLOSE = 1
+
+               MOVE ZERO TO IS-KEY-ACTIVE
+
+               CALL "rlIsKeyDown" USING
+                 BY VALUE C-KEY-UP RETURNING IS-KEY-ACTIVE
+               IF IS-KEY-ACTIVE = 1 THEN
+                 PERFORM MOVE-UP
+               END-IF
+
+               CALL "rlIsKeyDown" USING
+                 BY VALUE C-KEY-DOWN RETURNING IS-KEY-ACTIVE
+               IF IS-KEY-ACTIVE = 1 THEN
+                 PERFORM MOVE-DOWN
+               END-IF
+
                CALL "rlBeginDrawing"
                CALL "rlClearBackground" USING BY VALUE 0
                CALL "MINIMAP" USING GAME-STATE
@@ -52,5 +81,13 @@
 
            CALL "rlCloseWindow".
            STOP RUN.
+
+       MOVE-UP.
+           COMPUTE PLAYER-X = PLAYER-X + CAM-DIR-X * MOVE-SPEED.
+           COMPUTE PLAYER-Y = PLAYER-Y + CAM-DIR-Y * MOVE-SPEED.
+
+       MOVE-DOWN.
+           COMPUTE PLAYER-X = PLAYER-X - CAM-DIR-X * MOVE-SPEED.
+           COMPUTE PLAYER-Y = PLAYER-Y - CAM-DIR-Y * MOVE-SPEED.
 
        END PROGRAM RAYCAST.
