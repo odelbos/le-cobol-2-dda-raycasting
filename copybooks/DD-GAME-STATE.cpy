@@ -19,3 +19,13 @@
            05 PLAYER.
              10 PLAYER-X         COMP-1 VALUE ZERO.
              10 PLAYER-Y         COMP-1 VALUE ZERO.
+
+      * Camera direction
+           05 CAM-DIR.
+             10 CAM-DIR-X        COMP-1 VALUE ZERO.
+             10 CAM-DIR-Y        COMP-1 VALUE ZERO.
+
+      * Camera projection plane
+           05 CAM-PLANE.
+             10 CAM-PLANE-X      COMP-1 VALUE ZERO.
+             10 CAM-PLANE-Y      COMP-1 VALUE ZERO.

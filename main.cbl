@@ -29,6 +29,12 @@
            MOVE 5.5 TO PLAYER-X.
            MOVE 6.5 TO PLAYER-Y.
 
+           MOVE -1 TO CAM-DIR-X.
+           MOVE 0 TO CAM-DIR-Y.
+
+           MOVE 0 TO CAM-PLANE-X.
+           MOVE -0.66 TO CAM-PLANE-Y
+
       * Create window
            CALL "rlInitWindow" USING
                BY VALUE WS-WINDOW-WIDTH

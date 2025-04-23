@@ -5,6 +5,7 @@
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
        REPOSITORY.
+           FUNCTION VEC2-ADD
            FUNCTION WORLD-TO-MAP.
 
        DATA DIVISION.
@@ -17,6 +18,10 @@
 
        01 WS-X             PIC 9(2) VALUE ZERO.
        01 WS-Y             PIC 9(2) VALUE ZERO.
+
+       01 WS-W1.
+           05 WS-W1-X      COMP-1 VALUE ZERO.
+           05 WS-W1-Y      COMP-1 VALUE ZERO.
 
        01 WS-P1.
            05 WS-P1-X      PIC 9(3) VALUE ZERO.
@@ -45,8 +50,7 @@
        RENDER-MAP.
 
          CALL "rlDrawRectangle" USING
-               BY VALUE MAP-X MAP-Y MAP-WIDTH
-               MAP-HEIGHT, 1
+               BY VALUE MAP-X MAP-Y MAP-WIDTH MAP-HEIGHT, 1
 
          PERFORM VARYING WS-Y FROM 1 BY 1
                    UNTIL WS-Y > WS-WORLD-HEIGHT
@@ -77,9 +81,7 @@
             COMPUTE WS-P2-Y = MAP-Y + MAP-HEIGHT
 
             CALL "rlDrawLine" USING
-                BY VALUE WS-P1-X MAP-Y
-                WS-P1-X WS-P2-Y
-                2
+                BY VALUE WS-P1-X MAP-Y WS-P1-X WS-P2-Y 2
          END-PERFORM.
 
          PERFORM VARYING WS-Y FROM 1 BY 1
@@ -89,9 +91,7 @@
             COMPUTE WS-P2-X = MAP-X + MAP-WIDTH
 
             CALL "rlDrawLine" USING
-                BY VALUE MAP-X WS-P1-Y
-                WS-P2-X WS-P1-Y
-                2
+                BY VALUE MAP-X WS-P1-Y WS-P2-X WS-P1-Y 2
          END-PERFORM.
 
        RENDER-MAP-PLAYER.
@@ -101,5 +101,11 @@
            MOVE 5.0 TO WS-RADIUS.
            CALL "rlDrawCircle" USING
              BY VALUE WS-P1-X WS-P1-Y WS-RADIUS 6.
+
+           MOVE VEC2-ADD (CAM-DIR, PLAYER) TO WS-W1.
+           MOVE WORLD-TO-MAP (GAME-STATE, WS-W1) TO WS-P2.
+
+           CALL "rlDrawLine" USING
+             BY VALUE WS-P1-X WS-P1-Y WS-P2-X WS-P2-Y 3.
 
        END PROGRAM MINIMAP.
