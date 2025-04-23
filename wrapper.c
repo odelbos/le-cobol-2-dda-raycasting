@@ -6,6 +6,11 @@
 // of having to pass Color struct from COBOL to C.
 Color colors[] = {
   BACKGROUND,
+  BLACK,          // Mini map background
+  GRAY,           // Mini map lines
+  BLUE,           // Wall colors
+  GREEN,          // ...
+  MAGENTA,
   RED,
 };
 
@@ -39,4 +44,8 @@ void rlClearBackground(int colorIdx) {
 
 void rlDrawRectangle(int x, int y, int width, int height, int colorIdx) {
   DrawRectangle(x, y, width, height, colors[colorIdx]);
+}
+
+void rlDrawLine(int x1, int y1, int x2, int y2, int colorIdx) {
+  DrawLine(x1, y1, x2, y2, colors[colorIdx]);
 }

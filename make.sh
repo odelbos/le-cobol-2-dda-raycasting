@@ -39,5 +39,5 @@ set -xe
 
 $CC $CFLAGS $RAYLIB_FLAGS -c wrapper.c -o ./build/wrapper.o
 
-cobc -x -o raycast main.cbl ./build/wrapper.o \
+cobc -x -o raycast main.cbl ./build/wrapper.o -I copybooks \
   $RAYLIB_LIBS -lm -lpthread
