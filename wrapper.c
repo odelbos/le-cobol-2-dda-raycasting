@@ -49,3 +49,7 @@ void rlDrawRectangle(int x, int y, int width, int height, int colorIdx) {
 void rlDrawLine(int x1, int y1, int x2, int y2, int colorIdx) {
   DrawLine(x1, y1, x2, y2, colors[colorIdx]);
 }
+
+void rlDrawCircle(int x, int y, float r, int colorIdx) {
+  DrawCircle(x, y, r, colors[colorIdx]);
+}

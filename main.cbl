@@ -13,6 +13,9 @@
        COPY DD-WORLD-SIZE.
        COPY DD-WORLD-DATA.
 
+       01 WS-PLAYER-X     COMP-1 VALUE ZERO.
+       01 WS-PLAYER-Y     COMP-1 VALUE ZERO.
+
        01 WS-MAP-WIDTH    PIC 9(3) VALUE 300.
        01 WS-MAP-HEIGHT   PIC 9(3) VALUE 300.
 
@@ -23,6 +26,9 @@
        01 WS-MAP-CELL-H   COMP-1 VALUE ZERO.
 
        01 WS-MAP-WALL     PIC 9(1) VALUE ZERO.
+
+       01 WS-TMP-X         COMP-1 VALUE ZERO.
+       01 WS-TMP-Y         COMP-1 VALUE ZERO.
 
        01 WS-X            PIC 9(2) VALUE ZERO.
        01 WS-Y            PIC 9(2) VALUE ZERO.
@@ -36,7 +42,12 @@
        01 WS-RECT-W       PIC 9(3) VALUE ZERO.
        01 WS-RECT-H       PIC 9(3) VALUE ZERO.
 
+       01 WS-RADIUS       COMP-1 VALUE ZERO.
+
        PROCEDURE DIVISION.
+
+           MOVE 5.5 TO WS-PLAYER-X.
+           MOVE 6.5 TO WS-PLAYER-Y.
 
            CALL "rlInitWindow" USING
                BY VALUE WS-WINDOW-WIDTH
@@ -46,7 +57,8 @@
            PERFORM UNTIL WS-SHOULD-CLOSE = 1
                CALL "rlBeginDrawing"
                CALL "rlClearBackground" USING BY VALUE 0
-               PERFORM RENDER-WORLD-MAP
+               PERFORM RENDER-MAP
+               PERFORM RENDER-MAP-PLAYER
                CALL "rlEndDrawing"
                CALL "rlWindowShouldClose" RETURNING WS-SHOULD-CLOSE
            END-PERFORM.
@@ -55,7 +67,7 @@
 
            STOP RUN.
 
-       RENDER-WORLD-MAP.
+       RENDER-MAP.
 
          CALL "rlDrawRectangle" USING
                BY VALUE WS-MAP-X WS-MAP-Y WS-MAP-WIDTH
@@ -118,5 +130,21 @@
                        WS-P2-X WS-P1-Y
                        2
          END-PERFORM.
+
+       RENDER-MAP-PLAYER.
+
+           MOVE 5.0 TO WS-RADIUS.
+
+           COMPUTE WS-TMP-X =
+             (WS-MAP-WIDTH / WS-WORLD-WIDTH) * WS-PLAYER-X + WS-MAP-X
+
+           COMPUTE WS-TMP-Y =
+             (WS-MAP-HEIGHT / WS-WORLD-HEIGHT) * WS-PLAYER-Y + WS-MAP-Y
+
+           MOVE FUNCTION INTEGER (WS-TMP-X) TO WS-P1-X.
+           MOVE FUNCTION INTEGER (WS-TMP-Y) TO WS-P1-Y.
+
+           CALL "rlDrawCircle" USING
+             BY VALUE WS-P1-X WS-P1-Y WS-RADIUS 6.
 
        END PROGRAM RAYCAST.
