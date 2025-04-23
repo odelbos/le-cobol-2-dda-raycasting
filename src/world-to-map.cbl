@@ -1,0 +1,39 @@
+       IDENTIFICATION DIVISION.
+       FUNCTION-ID. WORLD-TO-MAP.
+       AUTHOR. Olivier Delbos.
+
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       REPOSITORY.
+           FUNCTION VEC2-MUL.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+
+       COPY DD-WORLD-SIZE.
+
+       01 WS-B.
+           05 WS-B-X       COMP-1 VALUE ZERO.
+           05 WS-B-Y       COMP-1 VALUE ZERO.
+
+       LINKAGE SECTION.
+
+       COPY DD-GAME-STATE.
+
+       01 LK-A.
+           05 LK-A-X       COMP-1 VALUE ZERO.
+           05 LK-A-Y       COMP-1 VALUE ZERO.
+
+       01 LK-R.
+           05 LK-R-X       PIC 9(3) VALUE ZERO.
+           05 LK-R-Y       PIC 9(3) VALUE ZERO.
+
+       PROCEDURE DIVISION USING GAME-STATE LK-A RETURNING LK-R.
+
+           MOVE VEC2-MUL (LK-A, MAP-RATIO) TO WS-B.
+           COMPUTE LK-R-X = FUNCTION INTEGER (WS-B-X + MAP-X).
+           COMPUTE LK-R-Y = FUNCTION INTEGER (WS-B-Y + MAP-Y).
+
+           EXIT FUNCTION.
+
+       END FUNCTION WORLD-TO-MAP.

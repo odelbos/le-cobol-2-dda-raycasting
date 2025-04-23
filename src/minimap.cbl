@@ -2,6 +2,11 @@
        PROGRAM-ID. MINIMAP.
        AUTHOR. Olivier Delbos.
 
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       REPOSITORY.
+           FUNCTION WORLD-TO-MAP.
+
        DATA DIVISION.
        WORKING-STORAGE SECTION.
 
@@ -13,14 +18,13 @@
        01 WS-X             PIC 9(2) VALUE ZERO.
        01 WS-Y             PIC 9(2) VALUE ZERO.
 
-       01 WS-TMP-X         COMP-1 VALUE ZERO.
-       01 WS-TMP-Y         COMP-1 VALUE ZERO.
+       01 WS-P1.
+           05 WS-P1-X      PIC 9(3) VALUE ZERO.
+           05 WS-P1-Y      PIC 9(3) VALUE ZERO.
 
-       01 WS-P1-X          PIC 9(3) VALUE ZERO.
-       01 WS-P1-Y          PIC 9(3) VALUE ZERO.
-
-       01 WS-P2-X          PIC 9(3) VALUE ZERO.
-       01 WS-P2-Y          PIC 9(3) VALUE ZERO.
+       01 WS-P2.
+           05 WS-P2-X      PIC 9(3) VALUE ZERO.
+           05 WS-P2-Y      PIC 9(3) VALUE ZERO.
 
        01 WS-RECT-W        PIC 9(3) VALUE ZERO.
        01 WS-RECT-H        PIC 9(3) VALUE ZERO.
@@ -92,11 +96,7 @@
 
        RENDER-MAP-PLAYER.
 
-           COMPUTE WS-TMP-X = MAP-RATIO-X * PLAYER-X + MAP-X.
-           COMPUTE WS-TMP-Y = MAP-RATIO-Y * PLAYER-Y + MAP-Y.
-
-           MOVE FUNCTION INTEGER (WS-TMP-X) TO WS-P1-X.
-           MOVE FUNCTION INTEGER (WS-TMP-Y) TO WS-P1-Y.
+           MOVE WORLD-TO-MAP (GAME-STATE, PLAYER) TO WS-P1.
 
            MOVE 5.0 TO WS-RADIUS.
            CALL "rlDrawCircle" USING
