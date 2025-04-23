@@ -2,6 +2,11 @@
        PROGRAM-ID. RAYCAST.
        AUTHOR. Olivier Delbos.
 
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       REPOSITORY.
+           FUNCTION VEC2-ROTATE.
+
        DATA DIVISION.
        WORKING-STORAGE SECTION.
 
@@ -23,6 +28,8 @@
        01 IS-KEY-ACTIVE       PIC 9 VALUE ZERO.
 
        01 MOVE-SPEED          COMP-1 VALUE ZERO.
+       01 ROT-SPEED           COMP-1 VALUE ZERO.
+       01 NEG-ROT-SPEED       COMP-1 VALUE ZERO.
 
        PROCEDURE DIVISION.
 
@@ -45,7 +52,9 @@
            MOVE 0 TO CAM-PLANE-X.
            MOVE -0.66 TO CAM-PLANE-Y
 
-           MOVE 0.05 TO MOVE-SPEED.
+           MOVE 0.025 TO MOVE-SPEED.
+           MOVE 0.02 TO ROT-SPEED.
+           MOVE -0.02 TO NEG-ROT-SPEED.
 
       * Create window
            CALL "rlInitWindow" USING
@@ -72,6 +81,18 @@
                  PERFORM MOVE-DOWN
                END-IF
 
+               CALL "rlIsKeyDown" USING
+                 BY VALUE C-KEY-LEFT RETURNING IS-KEY-ACTIVE
+               IF IS-KEY-ACTIVE = 1 THEN
+                 PERFORM MOVE-LEFT
+               END-IF
+
+               CALL "rlIsKeyDown" USING
+                 BY VALUE C-KEY-RIGHT RETURNING IS-KEY-ACTIVE
+               IF IS-KEY-ACTIVE = 1 THEN
+                 PERFORM MOVE-RIGHT
+               END-IF
+
                CALL "rlBeginDrawing"
                CALL "rlClearBackground" USING BY VALUE 0
                CALL "MINIMAP" USING GAME-STATE
@@ -89,5 +110,13 @@
        MOVE-DOWN.
            COMPUTE PLAYER-X = PLAYER-X - CAM-DIR-X * MOVE-SPEED.
            COMPUTE PLAYER-Y = PLAYER-Y - CAM-DIR-Y * MOVE-SPEED.
+
+       MOVE-LEFT.
+           MOVE VEC2-ROTATE (CAM-DIR, NEG-ROT-SPEED) TO CAM-DIR.
+           MOVE VEC2-ROTATE (CAM-PLANE, NEG-ROT-SPEED) TO CAM-PLANE.
+
+       MOVE-RIGHT.
+           MOVE VEC2-ROTATE (CAM-DIR, ROT-SPEED) TO CAM-DIR.
+           MOVE VEC2-ROTATE (CAM-PLANE, ROT-SPEED) TO CAM-PLANE.
 
        END PROGRAM RAYCAST.

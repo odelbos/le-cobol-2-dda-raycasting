@@ -126,3 +126,42 @@
            EXIT FUNCTION.
 
        END FUNCTION VEC2-SCALE.
+
+
+      * -----------------------------------------------------------
+      * Rotate a vector2
+      * -----------------------------------------------------------
+       IDENTIFICATION DIVISION.
+       FUNCTION-ID. VEC2-ROTATE.
+       AUTHOR. Olivier Delbos.
+
+       DATA DIVISION.
+
+       LOCAL-STORAGE SECTION.
+
+       01 LS-CA            COMP-1 VALUE ZERO.
+       01 LS-SA            COMP-1 VALUE ZERO.
+
+       LINKAGE SECTION.
+
+       01 LK-A.
+           05 LK-A-X       COMP-1 VALUE ZERO.
+           05 LK-A-Y       COMP-1 VALUE ZERO.
+
+       01 LK-ANGLE         COMP-1 VALUE ZERO.
+
+       01 LK-R.
+           05 LK-R-X       COMP-1 VALUE ZERO.
+           05 LK-R-Y       COMP-1 VALUE ZERO.
+
+       PROCEDURE DIVISION USING LK-A LK-ANGLE RETURNING LK-R.
+
+           MOVE FUNCTION COS (LK-ANGLE) TO LS-CA.
+           MOVE FUNCTION SIN (LK-ANGLE) TO LS-SA.
+
+           COMPUTE LK-R-X = LK-A-X * LS-CA - LK-A-Y * LS-SA.
+           COMPUTE LK-R-Y = LK-A-X * LS-SA + LK-A-Y * LS-CA
+
+           EXIT FUNCTION.
+
+       END FUNCTION VEC2-ROTATE.
