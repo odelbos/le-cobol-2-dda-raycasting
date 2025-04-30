@@ -94,7 +94,8 @@
 
                CALL "rlBeginDrawing"
                CALL "rlClearBackground" USING BY VALUE 0
-               CALL "MINIMAP" USING GAME-STATE
+               CALL 'MINIMAP' USING GAME-STATE
+               CALL 'MINIMAP-CAST-RAYS' USING GAME-STATE
                CALL "rlEndDrawing"
                CALL "rlWindowShouldClose" RETURNING WS-SHOULD-CLOSE
            END-PERFORM.

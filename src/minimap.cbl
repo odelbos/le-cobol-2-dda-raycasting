@@ -7,17 +7,13 @@
        REPOSITORY.
            FUNCTION VEC2-ADD
            FUNCTION VEC2-SCALE
-           FUNCTION CAST-RAY
            FUNCTION WORLD-TO-MAP.
 
        DATA DIVISION.
        WORKING-STORAGE SECTION.
 
-       COPY DD-WINDOW-SIZE.
        COPY DD-WORLD-SIZE.
        COPY DD-WORLD-DATA.
-
-       COPY DD-CAST-RESULT.
 
        01 WS-MAP-WALL      PIC 9(1) VALUE ZERO.
 
@@ -38,12 +34,7 @@
 
        01 WS-RECT-W        PIC 9(3) VALUE ZERO.
        01 WS-RECT-H        PIC 9(3) VALUE ZERO.
-
        01 WS-RADIUS        COMP-1 VALUE ZERO.
-
-       01 WS-DEPTH         COMP-1 VALUE ZERO.
-
-       01 WS-XX            PIC 9(4) VALUE ZERO.
 
        LINKAGE SECTION.
 
@@ -53,7 +44,6 @@
 
            PERFORM RENDER-MAP.
            PERFORM RENDER-MAP-PLAYER.
-           PERFORM CAST-MANY-RAYS.
 
            EXIT PROGRAM.
 
@@ -112,33 +102,5 @@
            MOVE WORLD-TO-MAP (GAME-STATE, WS-W1) TO WS-P2.
            CALL "rlDrawLine" USING
              BY VALUE WS-P1-X WS-P1-Y WS-P2-X WS-P2-Y 3.
-
-       CAST-MANY-RAYS.
-
-           MOVE WORLD-TO-MAP (GAME-STATE, PLAYER) TO WS-P1.
-
-           PERFORM VARYING WS-XX FROM 1 BY 10
-                   UNTIL WS-XX > (WS-WINDOW-WIDTH - 1)
-
-               COMPUTE WS-DEPTH = 2 * WS-XX / 960 - 1
-               MOVE FUNCTION VEC2-SCALE (CAM-PLANE, WS-DEPTH) TO WS-W1
-               MOVE FUNCTION VEC2-ADD (CAM-DIR, WS-W1) TO WS-W1
-
-               MOVE CAST-RAY (GAME-STATE, WS-W1) TO CAST-RESULT
-               IF CR-WALL > 0 THEN
-                 MOVE WORLD-TO-MAP (GAME-STATE, CR-HIT) TO WS-P2
-                 CALL "rlDrawLine" USING
-                   BY VALUE WS-P1-X WS-P1-Y WS-P2-X WS-P2-Y 4
-
-                 MOVE 2.5 TO WS-RADIUS
-                 CALL "rlDrawCircle" USING
-                   BY VALUE WS-P2-X WS-P2-Y WS-RADIUS 7
-               ELSE
-                 MOVE FUNCTION VEC2-ADD (PLAYER, WS-W1) TO WS-W1
-                 MOVE WORLD-TO-MAP (GAME-STATE, WS-W1) TO WS-P2
-                 CALL "rlDrawLine" USING
-                   BY VALUE WS-P1-X WS-P1-Y WS-P2-X WS-P2-Y 8
-               END-IF
-           END-PERFORM.
 
        END PROGRAM MINIMAP.
