@@ -66,6 +66,8 @@
 
            PERFORM UNTIL WS-SHOULD-CLOSE = 1
 
+               CALL "printFrameTime"
+
                MOVE ZERO TO IS-KEY-ACTIVE
 
                CALL "rlIsKeyDown" USING

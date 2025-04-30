@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <raylib.h>
 
 #define BACKGROUND CLITERAL(Color){20, 20, 20, 255}
@@ -62,4 +63,9 @@ void rlDrawLineEx(int x1, int y1, int x2, int y2, float stroke,  int colorIdx) {
 
 void rlDrawCircle(int x, int y, float r, int colorIdx) {
   DrawCircle(x, y, r, colors[colorIdx]);
+}
+
+void printFrameTime() {
+  float t = GetFrameTime();
+  printf("t = %f\n", t);
 }
