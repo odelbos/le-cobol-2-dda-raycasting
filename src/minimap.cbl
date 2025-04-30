@@ -6,6 +6,8 @@
        CONFIGURATION SECTION.
        REPOSITORY.
            FUNCTION VEC2-ADD
+           FUNCTION VEC2-SCALE
+           FUNCTION CAST-RAY
            FUNCTION WORLD-TO-MAP.
 
        DATA DIVISION.
@@ -13,6 +15,8 @@
 
        COPY DD-WORLD-SIZE.
        COPY DD-WORLD-DATA.
+
+       COPY DD-CAST-RESULT.
 
        01 WS-MAP-WALL      PIC 9(1) VALUE ZERO.
 
@@ -36,6 +40,8 @@
 
        01 WS-RADIUS        COMP-1 VALUE ZERO.
 
+       01 WS-DEPTH         COMP-1 VALUE ZERO.
+
        LINKAGE SECTION.
 
        COPY DD-GAME-STATE.
@@ -44,6 +50,8 @@
 
            PERFORM RENDER-MAP.
            PERFORM RENDER-MAP-PLAYER.
+
+           PERFORM CAST-SINGLE-RAY.
 
            EXIT PROGRAM.
 
@@ -107,5 +115,25 @@
 
            CALL "rlDrawLine" USING
              BY VALUE WS-P1-X WS-P1-Y WS-P2-X WS-P2-Y 3.
+
+       CAST-SINGLE-RAY.
+
+           MOVE WORLD-TO-MAP (GAME-STATE, PLAYER) TO WS-P1.
+
+           COMPUTE WS-DEPTH = 2 * 240 / 960 - 1.
+           MOVE FUNCTION VEC2-SCALE (CAM-PLANE, WS-DEPTH) TO WS-W1.
+           MOVE FUNCTION VEC2-ADD (CAM-DIR, WS-W1) TO WS-W1.
+
+           MOVE CAST-RAY (GAME-STATE, WS-W1) TO CAST-RESULT.
+           IF CR-WALL > 0 THEN
+             DISPLAY "wall = " CR-WALL
+             MOVE WORLD-TO-MAP (GAME-STATE, CR-HIT) TO WS-P2
+             CALL "rlDrawLine" USING
+               BY VALUE WS-P1-X WS-P1-Y WS-P2-X WS-P2-Y 4
+
+             MOVE 2.5 TO WS-RADIUS
+             CALL "rlDrawCircle" USING
+               BY VALUE WS-P2-X WS-P2-Y WS-RADIUS 7
+           END-IF.
 
        END PROGRAM MINIMAP.

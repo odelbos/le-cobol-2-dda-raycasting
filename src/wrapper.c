@@ -12,6 +12,7 @@ Color colors[] = {
   GREEN,          // ...
   MAGENTA,
   RED,
+  YELLOW,
 };
 
 void rlInitWindow(int width, int height, const char* title) {
