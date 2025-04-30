@@ -94,6 +94,7 @@
 
                CALL "rlBeginDrawing"
                CALL "rlClearBackground" USING BY VALUE 0
+               CALL 'RENDER-WORLD' USING GAME-STATE
                CALL 'MINIMAP' USING GAME-STATE
                CALL 'MINIMAP-CAST-RAYS' USING GAME-STATE
                CALL "rlEndDrawing"
