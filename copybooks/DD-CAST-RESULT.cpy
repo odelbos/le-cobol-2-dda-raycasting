@@ -8,8 +8,8 @@
            05 CR-RAY-DIST      COMP-1 VALUE ZERO.
 
            05 CR-CELL.
-             10 CR-CELL-X      PIC 99 VALUE ZERO.
-             10 CR-CELL-Y      PIC 99 VALUE ZERO.
+             10 CR-CELL-X      PIC S99 VALUE ZERO.
+             10 CR-CELL-Y      PIC S99 VALUE ZERO.
 
            05 CR-WALL          PIC 9 VALUE ZERO.
 
