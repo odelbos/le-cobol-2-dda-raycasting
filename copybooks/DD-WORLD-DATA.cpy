@@ -70,7 +70,7 @@
            05 FILLER PIC 9 VALUE 0.
            05 FILLER PIC 9 VALUE 0.
            05 FILLER PIC 9 VALUE 0.
-           05 FILLER PIC 9 VALUE 0.
+           05 FILLER PIC 9 VALUE 5.
 
       * Redifines as Array[8][8]
        01 WS-WORLD-ARRAY REDEFINES WS-WORLD-DATA.
