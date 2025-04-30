@@ -16,8 +16,7 @@
        01 C-KEY-UP            PIC 9(3) VALUE 265.
        01 C-KEY-DOWN          PIC 9(3) VALUE 264.
 
-       01 WS-WINDOW-WIDTH     PIC 9(4) VALUE 960.
-       01 WS-WINDOW-HEIGHT    PIC 9(4) VALUE 540.
+       COPY DD-WINDOW-SIZE.
        01 WS-WINDOW-TITLE     PIC X(21) VALUE "COBOL Flat Raycasting".
        01 WS-SHOULD-CLOSE     PIC 9 VALUE 0.
 
