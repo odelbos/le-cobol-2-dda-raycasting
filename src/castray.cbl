@@ -102,6 +102,14 @@
                MOVE WS-WORLD(WS-CELL-Y, WS-CELL-X) TO CR-WALL
              END-IF
 
+             IF CR-CELL-X < 0 OR CR-CELL-Y < 0 THEN
+               MOVE 16 TO WS-MAX
+             END-IF
+
+             IF CR-CELL-X > 7 OR CR-CELL-Y > 7 THEN
+               MOVE 16 TO WS-MAX
+             END-IF
+
              ADD 1 TO WS-MAX
 
            END-PERFORM.

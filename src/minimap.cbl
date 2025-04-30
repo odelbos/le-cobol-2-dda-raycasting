@@ -126,7 +126,6 @@
 
            MOVE CAST-RAY (GAME-STATE, WS-W1) TO CAST-RESULT.
            IF CR-WALL > 0 THEN
-             DISPLAY "wall = " CR-WALL
              MOVE WORLD-TO-MAP (GAME-STATE, CR-HIT) TO WS-P2
              CALL "rlDrawLine" USING
                BY VALUE WS-P1-X WS-P1-Y WS-P2-X WS-P2-Y 4
