@@ -23,8 +23,8 @@
        01 WS-X             PIC 9(4) VALUE ZERO.
 
        01 WS-H             PIC 9(4) VALUE ZERO.
-       01 WS-Y1            PIC 9(4) VALUE ZERO.
-       01 WS-Y2            PIC 9(4) VALUE ZERO.
+       01 WS-Y1            PIC S9(4) VALUE ZERO.
+       01 WS-Y2            PIC S9(4) VALUE ZERO.
        01 WS-STROKE        COMP-1 VALUE 1.1.
 
        LINKAGE SECTION.
