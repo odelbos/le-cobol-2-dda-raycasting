@@ -15,6 +15,8 @@
        COPY DD-WINDOW-SIZE.
        COPY DD-CAST-RESULT.
 
+       01 WS-RAY-SIZE      PIC 9 VALUE 3.
+
        01 WS-W1.
            05 WS-W1-X      COMP-1 VALUE ZERO.
            05 WS-W1-Y      COMP-1 VALUE ZERO.
@@ -33,7 +35,9 @@
 
        PROCEDURE DIVISION USING GAME-STATE.
 
-           PERFORM VARYING WS-X FROM 1 BY 1
+           MOVE WS-RAY-SIZE TO WS-STROKE
+
+           PERFORM VARYING WS-X FROM 1 BY WS-RAY-SIZE
                    UNTIL WS-X > (WS-WINDOW-WIDTH - 1)
 
                COMPUTE WS-DEPTH = 2 * WS-X / 960 - 1
@@ -44,12 +48,12 @@
                IF CR-WALL > 0 THEN
                  COMPUTE WS-H = WS-WINDOW-HEIGHT / CR-RAY-DIST
 
-                 COMPUTE WS-Y1 = - WS-H / 2 + WS-WINDOW-HEIGHT / 2
+                 COMPUTE WS-Y1 =  WS-WINDOW-HEIGHT / 2 - WS-H / 2
                  IF WS-Y1 < 0 THEN
                      MOVE 0 TO WS-Y1
                  END-IF
 
-                 COMPUTE WS-Y2 = WS-H / 2 + WS-WINDOW-HEIGHT / 2
+                 COMPUTE WS-Y2 = WS-WINDOW-HEIGHT / 2 + WS-H / 2
                  IF WS-Y2 >= WS-WINDOW-HEIGHT THEN
                      COMPUTE WS-Y2 = WS-WINDOW-HEIGHT - 1
                  END-IF
