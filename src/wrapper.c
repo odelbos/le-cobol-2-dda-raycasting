@@ -45,6 +45,10 @@ int rlIsKeyDown(int key) {
   return (int)IsKeyDown(key);
 }
 
+int rlIsKeyPressed(int key) {
+  return (int)IsKeyPressed(key);
+}
+
 void rlClearBackground(int colorIdx) {
   ClearBackground(colors[colorIdx]);
 }

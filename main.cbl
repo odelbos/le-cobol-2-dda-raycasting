@@ -15,6 +15,7 @@
        01 C-KEY-RIGHT         PIC 9(3) VALUE 262.
        01 C-KEY-UP            PIC 9(3) VALUE 265.
        01 C-KEY-DOWN          PIC 9(3) VALUE 264.
+       01 C-KEY-M             PIC 9(3) VALUE 77.
 
        COPY DD-WINDOW-SIZE.
        01 WS-WINDOW-TITLE     PIC X(21) VALUE "COBOL Flat Raycasting".
@@ -24,6 +25,10 @@
        COPY DD-WORLD-DATA.
        COPY DD-GAME-STATE.
 
+       01 IS-SHOW-MAP         PIC 9 VALUE ZERO.
+         88 SHOW-MAP          VALUE 0.
+         88 HIDE-MAP          VALUE 1.
+
        01 IS-KEY-ACTIVE       PIC 9 VALUE ZERO.
 
        01 MOVE-SPEED          COMP-1 VALUE ZERO.
@@ -31,6 +36,8 @@
        01 NEG-ROT-SPEED       COMP-1 VALUE ZERO.
 
        PROCEDURE DIVISION.
+
+           SET SHOW-MAP TO TRUE.
 
       * Initialize game state
            MOVE 20 TO MAP-X.
@@ -94,11 +101,23 @@
                  PERFORM MOVE-RIGHT
                END-IF
 
+               CALL "rlIsKeyPressed" USING
+                 BY VALUE C-KEY-M RETURNING IS-KEY-ACTIVE
+               IF IS-KEY-ACTIVE = 1 THEN
+                 IF SHOW-MAP THEN
+                   SET HIDE-MAP TO TRUE
+                 ELSE
+                   SET SHOW-MAP TO TRUE
+                 END-IF
+               END-IF
+
                CALL "rlBeginDrawing"
                CALL "rlClearBackground" USING BY VALUE 0
                CALL 'RENDER-WORLD' USING GAME-STATE
-               CALL 'MINIMAP' USING GAME-STATE
-               CALL 'MINIMAP-CAST-RAYS' USING GAME-STATE
+               IF SHOW-MAP THEN
+                 CALL 'MINIMAP' USING GAME-STATE
+                 CALL 'MINIMAP-CAST-RAYS' USING GAME-STATE
+               END-IF
                CALL "rlEndDrawing"
                CALL "rlWindowShouldClose" RETURNING WS-SHOULD-CLOSE
            END-PERFORM.
