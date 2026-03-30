@@ -17,59 +17,73 @@ Color colors[] = {
   ORANGE,
 };
 
-void rlInitWindow(int width, int height, const char* title) {
+void rlInitWindow(int width, int height, const char* title)
+{
   InitWindow(width, height, title);
 }
 
-void rlSetTargetFPS(int fps) {
+void rlSetTargetFPS(int fps)
+{
   SetTargetFPS(fps);
 }
 
-int rlWindowShouldClose() {
+int rlWindowShouldClose()
+{
   return (int)WindowShouldClose();
 }
 
-void rlCloseWindow() {
+void rlCloseWindow()
+{
   CloseWindow();
 }
 
-void rlBeginDrawing() {
+void rlBeginDrawing()
+{
   BeginDrawing();
 }
 
-void rlEndDrawing() {
+void rlEndDrawing()
+{
   EndDrawing();
 }
 
-int rlIsKeyDown(int key) {
+int rlIsKeyDown(int key)
+{
   return (int)IsKeyDown(key);
 }
 
-int rlIsKeyPressed(int key) {
+int rlIsKeyPressed(int key)
+{
   return (int)IsKeyPressed(key);
 }
 
-void rlClearBackground(int colorIdx) {
+void rlClearBackground(int colorIdx)
+{
   ClearBackground(colors[colorIdx]);
 }
 
-void rlDrawRectangle(int x, int y, int width, int height, int colorIdx) {
+void rlDrawRectangle(int x, int y, int width, int height, int colorIdx)
+{
   DrawRectangle(x, y, width, height, colors[colorIdx]);
 }
 
-void rlDrawLine(int x1, int y1, int x2, int y2, int colorIdx) {
+void rlDrawLine(int x1, int y1, int x2, int y2, int colorIdx)
+{
   DrawLine(x1, y1, x2, y2, colors[colorIdx]);
 }
 
-void rlDrawLineEx(int x1, int y1, int x2, int y2, float stroke,  int colorIdx) {
+void rlDrawLineEx(int x1, int y1, int x2, int y2, float stroke,  int colorIdx)
+{
   DrawLineEx((Vector2){x1, y1}, (Vector2){x2, y2}, stroke, colors[colorIdx]);
 }
 
-void rlDrawCircle(int x, int y, float r, int colorIdx) {
+void rlDrawCircle(int x, int y, float r, int colorIdx)
+{
   DrawCircle(x, y, r, colors[colorIdx]);
 }
 
-void printFrameTime() {
+void printFrameTime()
+{
   float t = GetFrameTime();
   printf("t = %f\n", t);
 }
